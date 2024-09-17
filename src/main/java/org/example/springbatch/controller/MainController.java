@@ -31,7 +31,22 @@ public class MainController {
 
         jobLauncher.run(jobRegistry.getJob("firstJob"), jobParameters); // 특정 일자에 실행될 수 있도록 통제 하기 위함 입니다.
 
+        return "ok";
+    }
+
+    @GetMapping("/second")
+    public String secondApi(@RequestParam("value") String value) throws Exception {
+        // 배치 작업이 오래 걸리기 때문에 callable 로 비동기 처리를 진행 해야됩니다.
+        // 해당 프로젝트에는 동기 방식으로 진행 합니다.
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("date", value)
+                .toJobParameters();
+
+        jobLauncher.run(jobRegistry.getJob("secondJob"), jobParameters); // 특정 일자에 실행될 수 있도록 통제 하기 위함 입니다.
+
 
         return "ok";
     }
+
+
 }
